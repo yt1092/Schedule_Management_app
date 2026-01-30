@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+.venv/
+venv/
+# DB
+app/test.db
+# Node
+node_modules/
+frontend/build/
+# Misc
+.DS_Store
