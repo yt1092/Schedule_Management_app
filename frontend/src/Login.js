@@ -71,7 +71,7 @@ function Login({ onLoginSuccess }) {
         throw new Error(data.detail || "登録に失敗しました");
       }
 
-      const data = await response.json();
+      await response.json();
       setError("");
       setEmail("");
       setPassword("");
