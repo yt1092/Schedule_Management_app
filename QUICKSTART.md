@@ -100,6 +100,53 @@ cd app
 pip install -r requirements.txt
 ```
 
+## デプロイ方法
+
+### バックエンドデプロイ（Railway）
+
+1. [Railway](https://railway.app) にアカウント作成・ログイン
+2. 「New Project」→「Deploy from GitHub repo」
+3. このリポジトリを選択
+4. 自動デプロイが開始される
+5. デプロイ完了後、URL（例: `https://your-app.railway.app`）を取得
+
+### フロントエンドデプロイ（Vercel）
+
+1. [Vercel](https://vercel.com) にアカウント作成・ログイン
+2. 「New Project」→「Import Git Repository」
+3. このリポジトリを選択
+4. 設定:
+   - **Framework Preset**: React
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `build`
+   - **Environment Variables**:
+     - `REACT_APP_API_URL`: RailwayのバックエンドURL（例: `https://your-app.railway.app`）
+5. 「Deploy」をクリック
+6. デプロイ完了後、URL（例: `https://your-app.vercel.app`）を取得
+
+### デプロイ後の確認
+
+1. VercelのURLを開く
+2. ユーザー登録・ログイン
+3. タスク追加・削除
+4. カレンダービュー切り替え
+
+## トラブルシューティング（デプロイ）
+
+### ❌ バックエンドが起動しない
+- Railwayのログを確認
+- `requirements.txt` が正しいか確認
+- Pythonバージョンが3.8以上か確認
+
+### ❌ フロントエンドがAPIに接続できない
+- Vercelの環境変数 `REACT_APP_API_URL` が正しいURLか確認
+- RailwayのURLに `/api` が付かないよう注意（例: `https://your-app.railway.app`）
+
+### ❌ カレンダーが表示されない
+- `npm install` が実行されたか確認
+- `react-calendar` が `package.json` に追加されているか確認
+
 ## 次のステップ
 
 - Renderへのデプロイ → [RENDER_SETUP.md](./RENDER_SETUP.md)

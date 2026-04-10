@@ -260,6 +260,96 @@ body {
   font-size: 14px;
 }
 
+/* ========== View Buttons ========== */
+.view-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.view-buttons button {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid white;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.view-buttons button.active {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.view-buttons button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ========== Calendar View ========== */
+.calendar-view {
+  text-align: center;
+}
+
+.calendar-view h2 {
+  margin-bottom: 20px;
+}
+
+.react-calendar {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.react-calendar__tile {
+  padding: 10px;
+  position: relative;
+}
+
+.calendar-tasks {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 10px;
+  overflow: hidden;
+}
+
+.calendar-task {
+  background-color: #667eea;
+  color: white;
+  padding: 1px 2px;
+  border-radius: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calendar-task.priority-1 {
+  background-color: #d32f2f;
+}
+
+.calendar-task.priority-2 {
+  background-color: #f57c00;
+}
+
+.calendar-task.priority-3 {
+  background-color: #388e3c;
+}
+
+.more-tasks {
+  font-size: 8px;
+  color: #666;
+}
+
 /* ========== Responsive ========== */
 @media (max-width: 768px) {
   .header-content {

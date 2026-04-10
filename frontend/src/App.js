@@ -1,6 +1,8 @@
 import "./App.css";
 import "./APP.css";
 import { useEffect, useState } from "react";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import Login from "./Login";
 
 function App() {
@@ -12,6 +14,7 @@ function App() {
   const [priority, setPriority] = useState(3);
   const [deadline, setDeadline] = useState("");
   const [error, setError] = useState("");
+  const [view, setView] = useState("list");
 
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
@@ -142,6 +145,10 @@ function App() {
         <div className="header-content">
           <h1>📅 Schedule Management</h1>
           <div className="header-right">
+            <div className="view-buttons">
+              <button className={view === "list" ? "active" : ""} onClick={() => setView("list")}>リスト</button>
+              <button className={view === "calendar" ? "active" : ""} onClick={() => setView("calendar")}>カレンダー</button>
+            </div>
             <p className="user-info">{userEmail}</p>
             <button className="logout-btn" onClick={handleLogout}>ログアウト</button>
           </div>
@@ -179,47 +186,76 @@ function App() {
         </section>
 
         <section className="task-list-section">
-          <h2>タスク一覧 ({tasks.length}件)</h2>
-          {tasks.length === 0 ? (
-            <p className="no-tasks">タスクがまだありません</p>
-          ) : (
-            <div className="task-list">
-              {tasks.map(task => {
-                const now = new Date();
-                const deadline = task.deadline ? new Date(task.deadline) : null;
-                const daysLeft = deadline ? Math.ceil((deadline - now) / (1000 * 60 * 60 * 24)) : null;
-                const isUrgent = daysLeft !== null && daysLeft <= 3 && daysLeft > 0;
-                const isOverdue = daysLeft !== null && daysLeft <= 0;
+          {view === "list" ? (
+            <>
+              <h2>タスク一覧 ({tasks.length}件)</h2>
+              {tasks.length === 0 ? (
+                <p className="no-tasks">タスクがまだありません</p>
+              ) : (
+                <div className="task-list">
+                  {tasks.map(task => {
+                    const now = new Date();
+                    const deadline = task.deadline ? new Date(task.deadline) : null;
+                    const daysLeft = deadline ? Math.ceil((deadline - now) / (1000 * 60 * 60 * 24)) : null;
+                    const isUrgent = daysLeft !== null && daysLeft <= 3 && daysLeft > 0;
+                    const isOverdue = daysLeft !== null && daysLeft <= 0;
 
-                return (
-                <div key={task.id} className={`task ${isOverdue ? 'overdue' : isUrgent ? 'urgent' : ''}`}>
-                  <div className="task-content">
-                    <span
-                      className={
-                        task.priority === 1
-                          ? "priority-high"
-                          : task.priority === 2
-                          ? "priority-medium"
-                          : "priority-low"
-                      }
-                    >
-                      {isUrgent && "⚠️ "}
-                      {isOverdue && "❌ "}
-                      {task.title}
-                    </span>
-                    <span className="priority-badge">
-                      {task.priority === 1 ? "高" : task.priority === 2 ? "中" : "低"}
-                    </span>
-                    {deadline && (
-                      <span className={`deadline-badge ${isOverdue ? 'overdue-badge' : isUrgent ? 'urgent-badge' : ''}`}>
-                        {daysLeft === 0 ? "今日まで" : daysLeft === 1 ? "明日まで" : daysLeft > 0 ? `残り${daysLeft}日` : "期限超過"}
-                      </span>
-                    )}
-                  </div>
-                  <button className="delete" onClick={() => deleteTask(task.id)}>削除</button>
+                    return (
+                    <div key={task.id} className={`task ${isOverdue ? 'overdue' : isUrgent ? 'urgent' : ''}`}>
+                      <div className="task-content">
+                        <span
+                          className={
+                            task.priority === 1
+                              ? "priority-high"
+                              : task.priority === 2
+                              ? "priority-medium"
+                              : "priority-low"
+                          }
+                        >
+                          {isUrgent && "⚠️ "}
+                          {isOverdue && "❌ "}
+                          {task.title}
+                        </span>
+                        <span className="priority-badge">
+                          {task.priority === 1 ? "高" : task.priority === 2 ? "中" : "低"}
+                        </span>
+                        {deadline && (
+                          <span className={`deadline-badge ${isOverdue ? 'overdue-badge' : isUrgent ? 'urgent-badge' : ''}`}>
+                            {daysLeft === 0 ? "今日まで" : daysLeft === 1 ? "明日まで" : daysLeft > 0 ? `残り${daysLeft}日` : "期限超過"}
+                          </span>
+                        )}
+                      </div>
+                      <button className="delete" onClick={() => deleteTask(task.id)}>削除</button>
+                    </div>
+                    );
+                  })}
                 </div>
-                );
-              })}
+              )}
+            </>
+          ) : (
+            <div className="calendar-view">
+              <h2>カレンダー</h2>
+              <Calendar
+                tileContent={({ date, view }) => {
+                  if (view === 'month') {
+                    const dayTasks = tasks.filter(task => {
+                      if (!task.deadline) return false;
+                      const taskDate = new Date(task.deadline);
+                      return taskDate.toDateString() === date.toDateString();
+                    });
+                    return dayTasks.length > 0 ? (
+                      <div className="calendar-tasks">
+                        {dayTasks.slice(0, 3).map(task => (
+                          <div key={task.id} className={`calendar-task priority-${task.priority}`}>
+                            {task.title}
+                          </div>
+                        ))}
+                        {dayTasks.length > 3 && <div className="more-tasks">+{dayTasks.length - 3} more</div>}
+                      </div>
+                    ) : null;
+                  }
+                }}
+              />
             </div>
           )}
         </section>
