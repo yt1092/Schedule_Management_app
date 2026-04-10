@@ -1,5 +1,4 @@
 import "./App.css";
-import "./APP.css";
 import { useEffect, useState } from "react";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -18,8 +17,7 @@ function App() {
 
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
-  // ログイン状態の確認
-  useEffect(() => {
+  // ログイン状態�E確誁E  useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     const storedEmail = localStorage.getItem("userEmail");
     
@@ -30,16 +28,14 @@ function App() {
     }
   }, []);
 
-  // ログイン成功時の処理
-  const handleLoginSuccess = (id, email) => {
+  // ログイン成功時�E処琁E  const handleLoginSuccess = (id, email) => {
     setIsLoggedIn(true);
     setUserId(id);
     setUserEmail(email);
     fetchTasks(id);
   };
 
-  // ログアウト
-  const handleLogout = () => {
+  // ログアウチE  const handleLogout = () => {
     setIsLoggedIn(false);
     setUserId(null);
     setUserEmail(null);
@@ -48,8 +44,7 @@ function App() {
     localStorage.removeItem("userEmail");
   };
 
-  // タスク取得
-  const fetchTasks = (id) => {
+  // タスク取征E  const fetchTasks = (id) => {
     fetch(`${API_URL}/api/tasks/?user_id=${id}`)
       .then((res) => {
         if (!res.ok) {
@@ -105,8 +100,7 @@ function App() {
         setPriority(3);
         setDeadline("");
         setError("");
-        fetchTasks(userId); // 再取得
-      })
+        fetchTasks(userId); // 再取征E      })
       .catch((err) => {
         console.error("Error adding task:", err);
         setError(`タスク追加に失敗しました: ${err.message}`);
@@ -133,7 +127,7 @@ function App() {
       });
   };
 
-  // ログイン前の画面
+  // ログイン前�E画面
   if (!isLoggedIn) {
     return <Login onLoginSuccess={handleLoginSuccess} />;
   }
@@ -146,17 +140,17 @@ function App() {
           <h1>📅 Schedule Management</h1>
           <div className="header-right">
             <div className="view-buttons">
-              <button className={view === "list" ? "active" : ""} onClick={() => setView("list")}>リスト</button>
+              <button className={view === "list" ? "active" : ""} onClick={() => setView("list")}>リスチE/button>
               <button className={view === "calendar" ? "active" : ""} onClick={() => setView("calendar")}>カレンダー</button>
             </div>
             <p className="user-info">{userEmail}</p>
-            <button className="logout-btn" onClick={handleLogout}>ログアウト</button>
+            <button className="logout-btn" onClick={handleLogout}>ログアウチE/button>
           </div>
         </div>
       </header>
 
       <main className="container">
-        {error && <div className="error-message">⚠️ {error}</div>}
+        {error && <div className="error-message">⚠�E�E{error}</div>}
 
         <section className="add-task-section">
           <h2>新しいタスクを追加</h2>
@@ -164,7 +158,7 @@ function App() {
             <input 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="タスク名を入力..."
+              placeholder="タスク名を入劁E.."
               onKeyPress={(e) => e.key === 'Enter' && addTask()}
             />
             <input
@@ -177,9 +171,9 @@ function App() {
               value={priority}
               onChange={(e) => setPriority(Number(e.target.value))}
             >
-              <option value={1}>🔴 高</option>
+              <option value={1}>🔴 髁E/option>
               <option value={2}>🟡 中</option>
-              <option value={3}>🟢 低</option>
+              <option value={3}>🟢 佁E/option>
             </select>
             <button className="add" onClick={addTask}>追加</button>
           </div>
@@ -212,16 +206,16 @@ function App() {
                               : "priority-low"
                           }
                         >
-                          {isUrgent && "⚠️ "}
-                          {isOverdue && "❌ "}
+                          {isUrgent && "⚠�E�E"}
+                          {isOverdue && "❁E"}
                           {task.title}
                         </span>
                         <span className="priority-badge">
-                          {task.priority === 1 ? "高" : task.priority === 2 ? "中" : "低"}
+                          {task.priority === 1 ? "髁E : task.priority === 2 ? "中" : "佁E}
                         </span>
                         {deadline && (
                           <span className={`deadline-badge ${isOverdue ? 'overdue-badge' : isUrgent ? 'urgent-badge' : ''}`}>
-                            {daysLeft === 0 ? "今日まで" : daysLeft === 1 ? "明日まで" : daysLeft > 0 ? `残り${daysLeft}日` : "期限超過"}
+                            {daysLeft === 0 ? "今日まで" : daysLeft === 1 ? "明日まで" : daysLeft > 0 ? `残り${daysLeft}日` : "期限趁E��"}
                           </span>
                         )}
                       </div>
@@ -269,3 +263,4 @@ function App() {
 }
 
 export default App;
+
